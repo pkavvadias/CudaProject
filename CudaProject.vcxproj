@@ -78,6 +78,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <CudaCompile Include="cublas.cu" />
+    <CudaCompile Include="optimizedAlgorithm.cu" />
     <CudaCompile Include="simpleAlgorithm.cu" />
   </ItemGroup>
   <ItemGroup>

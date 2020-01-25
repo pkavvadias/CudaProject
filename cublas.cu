@@ -32,6 +32,6 @@ void cublas_multiplication(const double* A, double* C, const int rows, const int
 		std::cout << "Error in cublas operation";
 		exit(EXIT_FAILURE);
 	}
-	std::cout << "Time elapsed to multiply using cublasDgemm is " << t.time()<<" ms"<< std::endl;
+	std::cout << "Time elapsed to multiply using cublasDgemm is " << t.time()<<" ms"<< std::endl<<std::endl;
 	cublasDestroy(handle);
 }

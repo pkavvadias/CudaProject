@@ -47,33 +47,33 @@ int main(int argc, char* argv[])
 	/*
 	 * Menu
 	 */
+	selector = 1;
+	std::cout << "We have a matrix of " << ROWS << " rows and " << COLUMNS << " columns and we multiply it with its transpose" << std::endl;
+	while (selector > 0 && selector < 4) {		
+		std::cout << "Select method of multiplication" << std::endl;
+		std::cout << "1.Using cublasDgemm" << std::endl;
+		std::cout << "2.Using our algorithm" << std::endl;
+		std::cout << "3.Using our optimized algorithm" << std::endl;
+		std::cout << "Any other number to exit" << std::endl;
 
-	std::cout << "We have a matrix of "<<ROWS<<" rows and "<<COLUMNS<<" columns and we multiply it with its transpose"<<std::endl;
-	std::cout << "Select method of multiplication" << std::endl;
-	std::cout << "1.Using cublasDgemm" << std::endl;
-	std::cout << "2.Using our algorithm" << std::endl;
-	std::cout << "3.Using our optimized algorithm" << std::endl;
-	std::cout << "Any other number to exit" << std::endl;
+		std::cin.clear();
+		std::cin >> selector;
 
-	std::cin.clear();
-	std::cin >> selector;
-
-	switch(selector){
-	case 1:
-		cublas_multiplication(device_A, device_C, ROWS, COLUMNS);
-		break;
-	case 2:
-		// TODO: Simple multiplication algorithm
-		t.start_count();
-		simple_algorithm<<<grid, block >>>(device_A, device_C, ROWS, COLUMNS);
-		t.stop_count();
-		std::cout << "Time elapsed to multiply using our simple algorithm is " << t.time() << " ms" << std::endl;
-		break;
-	case 3:
-		// TODO: Optimized multiplication algorithm
-		break;
+		switch (selector) {
+		case 1:
+			cublas_multiplication(device_A, device_C, ROWS, COLUMNS);
+			break;
+		case 2:
+			t.start_count();
+			simple_algorithm << <grid, block >> > (device_A, device_C, ROWS, COLUMNS);
+			t.stop_count();
+			std::cout << "Time elapsed to multiply using our simple algorithm is " << t.time() << " ms" << std::endl<<std::endl;
+			break;
+		case 3:
+			// TODO: Optimized multiplication algorithm
+			break;
+		}
 	}
-		
 	free(A);
 	free(C);
 	cuda_error_check(cudaFree(device_A));
