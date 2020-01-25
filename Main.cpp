@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include "Helper.h"
 #include "Multiplications.cuh"
 #include "device_launch_parameters.h"
@@ -7,6 +7,9 @@
 #define COLUMNS 300
 #define THREADS 32
 
+/*For optimized algorithm*/
+#define TILE_DIM 32	//Tile dimension
+#define BLOCK_SIZE_PER_DIM 16	//Block dimension
 int main(int argc, char* argv[])
 {
 	int selector;
@@ -40,6 +43,13 @@ int main(int argc, char* argv[])
 	dim3 grid(ceil(((float)ROWS) / block.x), ceil(((float)COLUMNS) / block.y));
 
 	/*
+	 *Grid and block for the optimized algorithm
+	 */
+	unsigned int numBlocksX = (ROWS - 1) / BLOCK_SIZE_PER_DIM + 1;
+	unsigned int numBlocksY = (ROWS - 1) / BLOCK_SIZE_PER_DIM + 1;
+	dim3 dimGridOpt(numBlocksX, numBlocksY, 1);
+	dim3 dimBlockOpt(BLOCK_SIZE_PER_DIM, BLOCK_SIZE_PER_DIM, 1);
+	/*
 	 * Initialize timer
 	 */
 	Timer t;
@@ -70,7 +80,11 @@ int main(int argc, char* argv[])
 			std::cout << "Time elapsed to multiply using our simple algorithm is " << t.time() << " ms" << std::endl<<std::endl;
 			break;
 		case 3:
-			// TODO: Optimized multiplication algorithm
+			t.start_count();
+			optimized_algorithm << <dimGridOpt, dimBlockOpt >> > (device_A, device_C, ROWS, COLUMNS);
+			t.stop_count();
+			std::cout << "Time elapsed to multiply using our optimized algorithm is " << t.time() << " ms" << std::endl << std::endl;
+			break;
 			break;
 		}
 	}
