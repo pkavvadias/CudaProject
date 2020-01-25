@@ -3,7 +3,7 @@
 #include <iostream>
 #include "cublas_v2.h"
 
-void cublass_multiplication(const double* A, double* C, const int rows, const int columns) {
+void cublas_multiplication(const double* A, double* C, const int rows, const int columns) {
 	Timer t;
 	/*
 	 * Cublass uses column-major implementation contrary to c/c++ default row-major

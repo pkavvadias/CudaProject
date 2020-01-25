@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
 
 	switch(selector){
 	case 1:
-		cublass_multiplication(device_A, device_C, ROWS, COLUMNS);
+		cublas_multiplication(device_A, device_C, ROWS, COLUMNS);
 		break;
 	case 2:
 		// TODO: Simple multiplication algorithm
