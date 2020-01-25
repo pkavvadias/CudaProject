@@ -78,6 +78,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <CudaCompile Include="cublas.cu" />
+    <CudaCompile Include="simpleAlgorithm.cu" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Helper.cpp" />
