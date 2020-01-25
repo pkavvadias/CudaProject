@@ -1,9 +1,11 @@
 #include <iostream>
 #include "Helper.h"
 #include "Multiplications.cuh"
-
-#define ROWS 30
-#define COLUMNS 30
+#include "device_launch_parameters.h"
+#include "cuda_runtime.h"
+#define ROWS 300
+#define COLUMNS 300
+#define THREADS 32
 
 int main(int argc, char* argv[])
 {
@@ -32,6 +34,17 @@ int main(int argc, char* argv[])
 	device_C=copy_matrix_to_device(device_C, C, COLUMNS, COLUMNS);
 
 	/*
+	 * Create cuda grid and block
+	 */
+	dim3 block(THREADS, THREADS);
+	dim3 grid(ceil(((float)ROWS) / block.x), ceil(((float)COLUMNS) / block.y));
+
+	/*
+	 * Initialize timer
+	 */
+	Timer t;
+	
+	/*
 	 * Menu
 	 */
 
@@ -51,6 +64,10 @@ int main(int argc, char* argv[])
 		break;
 	case 2:
 		// TODO: Simple multiplication algorithm
+		t.start_count();
+		simple_algorithm<<<grid, block >>>(device_A, device_C, ROWS, COLUMNS);
+		t.stop_count();
+		std::cout << "Time elapsed to multiply using our simple algorithm is " << t.time() << " ms" << std::endl;
 		break;
 	case 3:
 		// TODO: Optimized multiplication algorithm
