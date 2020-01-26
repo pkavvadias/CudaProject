@@ -6,8 +6,8 @@
 /*
  * Number of rows and columns of matrix A
  */
-#define ROWS 512
-#define COLUMNS 512
+#define ROWS 1200	
+#define COLUMNS 100
 /*
  * Number of threads for naive implementation
  */
