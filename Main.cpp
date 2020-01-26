@@ -3,13 +3,7 @@
 #include "Multiplications.cuh"
 #include "device_launch_parameters.h"
 #include "cuda_runtime.h"
-#define ROWS 300
-#define COLUMNS 200
-#define THREADS 32
 
-/*For optimized algorithm*/
-#define TILE_DIM 32	//Tile dimension
-#define BLOCK_SIZE_PER_DIM 16	//Block dimension
 int main(int argc, char* argv[])
 {
 	int selector;
@@ -40,7 +34,7 @@ int main(int argc, char* argv[])
 	 * Create cuda grid and block
 	 */
 	dim3 block(THREADS, THREADS);
-	dim3 grid(ceil(((float)ROWS) / block.x), ceil(((float)COLUMNS) / block.y));
+	dim3 grid(ceil(((float)COLUMNS) / block.x), ceil(((float)ROWS) / block.y));
 
 	/*
 	 *Grid and block for the optimized algorithm
@@ -51,7 +45,7 @@ int main(int argc, char* argv[])
 	dim3 dimGridOpt(numBlocksX, numBlocksY, 1);
 	dim3 dimBlockOpt(BLOCK_SIZE_PER_DIM, BLOCK_SIZE_PER_DIM, 1);
 	*/
-	dim3 dimGridOpt(ceil((float)COLUMNS / TILE_DIM), ceil((float)ROWS / TILE_DIM),1);
+	dim3 dimGridOpt(ceil((float)(COLUMNS-1) / TILE_DIM+1), ceil((float)(ROWS-1) / (TILE_DIM+1)),1);
 	dim3 dimBlockOpt(TILE_DIM, TILE_DIM, 1);
 	/*
 	 * Initialize timer
@@ -89,7 +83,6 @@ int main(int argc, char* argv[])
 			optimized_algorithm << <dimGridOpt, dimBlockOpt >> > (device_A, device_C, ROWS, COLUMNS);
 			t.stop_count();
 			std::cout << "Time elapsed to multiply using our optimized algorithm is " << t.time() << " ms" << std::endl << std::endl;
-			break;
 			break;
 		}
 	}

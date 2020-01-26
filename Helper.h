@@ -1,6 +1,13 @@
 #pragma once
 #include "cuda_runtime.h"
 #define cuda_error_check(ans) { gpuAssert((ans), __FILE__, __LINE__); }
+#define TILE_DIM 16
+#define ROWS 512
+#define COLUMNS 512
+#define THREADS 16
+
+/*For optimized algorithm*/
+//#define BLOCK_SIZE_PER_DIM 16	//Block dimension
 
 double random_double();
 bool fill_matrix(double *array,int rows,int columns);
