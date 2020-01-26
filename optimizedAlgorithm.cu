@@ -14,7 +14,7 @@ int tx = threadIdx.x;
 int ty = threadIdx.y;
 
 // Declaration of array As on shared memory to store submatrix of matrix A(On our case A=transpose(A))
-__shared__ float As[TILE_DIM][TILE_DIM];
+__shared__ double As[TILE_DIM][TILE_DIM];
 
 // Index of the first submatrix of A 
 int aBegin = ACols * TILE_DIM * by;
@@ -26,7 +26,7 @@ int aEnd = aBegin + ACols - 1;
 int aStep = TILE_DIM;
 
 //Stores the element calculated by the thread
-float Csub = 0;
+double Csub = 0;
 
 // Loops through all the submatrices of A required to compute the block submatrix
 #pragma unroll
