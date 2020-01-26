@@ -3,6 +3,9 @@
 #include <iostream>
 #include "cublas_v2.h"
 
+/*
+ * Multiplication using cuBLAS library
+ */
 void cublas_multiplication(const double* A, double* C, const int rows, const int columns) {
 	Timer t;
 	/*

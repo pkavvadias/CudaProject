@@ -39,14 +39,9 @@ int main(int argc, char* argv[])
 	/*
 	 *Grid and block for the optimized algorithm
 	 */
-	/**
-	unsigned int numBlocksX = (ROWS - 1) / BLOCK_SIZE_PER_DIM + 1;
-	unsigned int numBlocksY = (COLUMNS - 1) / BLOCK_SIZE_PER_DIM + 1;
-	dim3 dimGridOpt(numBlocksX, numBlocksY, 1);
-	dim3 dimBlockOpt(BLOCK_SIZE_PER_DIM, BLOCK_SIZE_PER_DIM, 1);
-	*/
 	dim3 dimGridOpt(ceil((float)(COLUMNS-1) / TILE_DIM+1), ceil((float)(ROWS-1) / (TILE_DIM+1)),1);
 	dim3 dimBlockOpt(TILE_DIM, TILE_DIM, 1);
+
 	/*
 	 * Initialize timer
 	 */
@@ -60,7 +55,7 @@ int main(int argc, char* argv[])
 	while (selector > 0 && selector < 4) {		
 		std::cout << "Select method of multiplication" << std::endl;
 		std::cout << "1.Using cublasDgemm" << std::endl;
-		std::cout << "2.Using our algorithm" << std::endl;
+		std::cout << "2.Using our naive algorithm" << std::endl;
 		std::cout << "3.Using our optimized algorithm" << std::endl;
 		std::cout << "Any other number to exit" << std::endl;
 
@@ -76,7 +71,6 @@ int main(int argc, char* argv[])
 			simple_algorithm << <grid, block >> > (device_A, device_C, ROWS, COLUMNS);
 			t.stop_count();
 			std::cout << "Time elapsed to multiply using our simple algorithm is " << t.time() << " ms" << std::endl<<std::endl;
-			//std::cout << cudaGetLastError();
 			break;
 		case 3:
 			t.start_count();
@@ -86,6 +80,9 @@ int main(int argc, char* argv[])
 			break;
 		}
 	}
+	/*
+	 * Freeing all pointers before exit
+	 */
 	free(A);
 	free(C);
 	cuda_error_check(cudaFree(device_A));

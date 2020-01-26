@@ -2,6 +2,9 @@
 #include "device_launch_parameters.h"
 #include "Multiplications.cuh"
 
+/*
+ * Naive algorithm for matrix multiplication
+ */
 __global__ void simple_algorithm(const double* A, double* C, const int rows, const int columns) {
 
 	const int 	row = blockIdx.y * blockDim.y + threadIdx.y,
