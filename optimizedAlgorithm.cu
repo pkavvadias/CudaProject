@@ -25,20 +25,14 @@ int aEnd = aBegin + ACols - 1;
 // Step size for iteration through submatrices of A
 int aStep = TILE_DIM;
 
-// Index of the first submatrix of B
-int bBegin = TILE_DIM * bx;
-
-// Step size for iteration through submatrices of B
-int bStep = TILE_DIM * ACols;
-
 //Stores the element calculated by the thread
 float Csub = 0;
 
-// Loops through all the submatrices of A and B required to compute the block submatrix
+// Loops through all the submatrices of A required to compute the block submatrix
 #pragma unroll
-for (int a = aBegin, b = bBegin;
+for (int a = aBegin;
 	a <= aEnd;
-	a += aStep, b += bStep) {
+	a += aStep) {
 
 
 	// Load the matrices from device memory to shared memory
